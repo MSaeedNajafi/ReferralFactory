@@ -20,21 +20,16 @@ app.post("/signup", async (req, res) => {
   try {
     const { newUserNameEmail, url } = req.body;
 
-    // username password handling with get stream
-    console.log("=========");
     console.log(newUserNameEmail, url);
-    console.log("=========");
 
     await sendMail(newUserNameEmail, url)
       .then((result) => console.log("Email sent...", result))
       .catch((error) => console.log(error.message));
 
     res.status(200).json({ newUserNameEmail, url });
-
-    // console.log(hashPassword);
   } catch (error) {
     console.log(error);
-    // res.status(500).json({ message: error });
+    res.status(500).json({ message: error });
   }
 });
 
