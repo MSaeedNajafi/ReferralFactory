@@ -209,7 +209,7 @@ function Dashboard() {
       .then(async (data) => {
         await console.log(data);
         await setNewUserNameURL(data.data.url);
-        // await console.log(newUserNameURL);
+        await console.log(newUserNameURL);
         // await console.log(data.data.url);
         const url = data.data.url;
         await console.log(url);
