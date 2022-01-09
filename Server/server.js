@@ -15,6 +15,24 @@ const REDIRECT_URI = "https://developers.google.com/oauthplayground";
 const REFRESH_TOKEN =
   "1//049SqVHW99CewCgYIARAAGAQSNwF-L9IrdJ4-vKTcEAE3jaRN1e2u1PKdZ2LDghaIxyhEsUtZ3QuAmLQ2SMcSdh7qhKtOUal08pE";
 
+//give reward
+app.post("/sendreward", async (req, res) => {
+  try {
+    const { emailTo } = req.body;
+
+    console.log("send reward to ", emailTo);
+
+    await sendMailReward(emailTo)
+      .then((result) => console.log("Email rewards sent...", result))
+      .catch((error) => console.log(error.message));
+
+    res.status(200).json({ emailTo });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error });
+  }
+});
+
 //sign up
 app.post("/signup", async (req, res) => {
   try {
@@ -63,6 +81,38 @@ async function sendMail(newUserNameEmail, url) {
       subject: "Hello from gmail using API",
       text: `${url} and this ${newUserNameEmail}`,
       html: `<h1>Email from: ${newUserNameEmail}</h1><br><p>this link: ${url}</p>`,
+    };
+
+    const result = await transport.sendMail(mailOptions);
+    return result;
+  } catch (error) {
+    return error;
+  }
+}
+
+async function sendMailReward(newUserNameEmail) {
+  try {
+    const accessToken = await oAuth2Client.getAccessToken();
+
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: "najafisaeed@gmail.com",
+        clientId: CLIENT_ID,
+        clientSecret: CLEINT_SECRET,
+        refreshToken: REFRESH_TOKEN,
+        accessToken: accessToken,
+      },
+    });
+
+    const mailOptions = {
+      from: "Saeed <najafisaeed@gmail.com>",
+      to: "iesteghlal@gmail.com",
+      // to: `${newUserNameEmail}`,
+      subject: "Your are getting a reward!",
+      text: `hellos ${newUserNameEmail}`,
+      html: `<h1>Hello ${newUserNameEmail}</h1><br><p>You are getting a reward!</p>`,
     };
 
     const result = await transport.sendMail(mailOptions);

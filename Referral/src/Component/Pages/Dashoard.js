@@ -484,6 +484,7 @@ function Dashboard() {
                               {/* <TableCell>Campaign ID</TableCell> */}
 
                               <TableCell>Name</TableCell>
+                              <TableCell align="left">Qualified</TableCell>
                               <TableCell align="left">Email</TableCell>
                               <TableCell align="left">Referrer Id</TableCell>
                               <TableCell align="left">Source</TableCell>
@@ -519,6 +520,9 @@ function Dashboard() {
                                 </TableCell> */}
                                   <TableCell component="th" scope="row">
                                     {user.first_name}
+                                  </TableCell>
+                                  <TableCell component="th" scope="row">
+                                    {user.qualified + ""}
                                   </TableCell>
                                   <TableCell align="left">
                                     {user.email}
