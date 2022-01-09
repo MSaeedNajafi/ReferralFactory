@@ -59,6 +59,7 @@ async function sendMail(newUserNameEmail, url) {
     const mailOptions = {
       from: "Saeed <najafisaeed@gmail.com>",
       to: "iesteghlal@gmail.com",
+      // to: `${newUserNameEmail}`,
       subject: "Hello from gmail using API",
       text: `${url} and this ${newUserNameEmail}`,
       html: `<h1>Email from: ${newUserNameEmail}</h1><br><p>this link: ${url}</p>`,
