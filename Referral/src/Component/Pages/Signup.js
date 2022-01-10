@@ -25,12 +25,24 @@ export default function SignIn() {
   const [token, setToken] = useState(
     "2sgv6D8Qpyedx2nHCM0fMGWO90yoRgU3nP1k0Ih0Uv8H8mK6Xk5cQAfadM7ElORMSFp8lYPcTnklRWTK"
   );
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     await handleSubmit();
-  //   }
-  //   fetchData();
-  // }, [code]);
+
+  useEffect(() => {
+    async function fetchData() {
+      await handleSubmit();
+    }
+    if (loading) {
+      fetchData();
+    }
+    console.log("printing users from api ", users);
+  }, [users]);
+
+  useEffect(() => {
+    console.log("my user---> ", user);
+  }, [user]);
+
+  useEffect(() => {
+    console.log("send email to---> ", emailTo);
+  }, [emailTo]);
 
   const handleSubmit = async (str) => {
     setLoading(true);
@@ -44,14 +56,12 @@ export default function SignIn() {
     })
       .then((res) => res.json())
       .then(async (data) => {
-        await setUsers(data.data);
+        setUsers(data.data);
       })
       .catch((error) => {
         console.log(error);
       });
     setLoading(false);
-
-    console.log("got data");
 
     // users.map((user) => {
     //   console.log(user.email);
@@ -59,28 +69,28 @@ export default function SignIn() {
 
     const useremails = [...users];
 
-    console.log(useremails);
+    const myUser = useremails.filter((u) => u.email == email);
 
-    await setUser(users.filter((u) => u.email == email));
-    console.log("found user");
+    console.log("------------------");
+    setUser(myUser);
+
     await console.log(user[0]);
     if (user.length > 0) {
       const ii = user[0].referrer_id;
       //   console.log("This user has been invited by " + user[0].referrer_id);
       const who = users.filter((u) => u.id == ii);
-      await console.log(who[0]);
-      await setEMailTo(who[0].email);
-      await console.log(emailTo);
+      await console.log("who --> ", who[0]);
+      setEMailTo(who[0].email);
       await console.log("This user has been invited by " + who[0].first_name);
       // alert(`This user has been invited by ${who[0].first_name}`);
       await findUser(user[0].id);
-      await setLoading(false);
+      setLoading(false);
     }
     // alert("hi");
   };
 
   const findUser = async (id) => {
-    // console.log(id);
+    console.log("inside find user: ", id);
     await fetch(`https://referral-factory.com/api/v1/users/${id}`, {
       method: "PUT",
       headers: new Headers({
@@ -95,7 +105,7 @@ export default function SignIn() {
         await console.log(data);
 
         if (emailTo.length > 0) {
-          await console.log(emailTo);
+          await console.log("inside if ", emailTo);
           const response = await axios.post(
             "http://localhost:8000/sendreward",
             {
@@ -106,6 +116,10 @@ export default function SignIn() {
           console.log("response--> ", response.data);
         }
         await console.log("========");
+        await setUser([]);
+        await setCode("");
+        await setEMail("");
+        await setEMailTo("");
       })
       .catch((error) => {
         console.log(error);

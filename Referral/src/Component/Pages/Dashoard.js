@@ -163,7 +163,7 @@ function Dashboard() {
     })
       .then((res) => res.json())
       .then(async (data) => {
-        await setUsers(data.data);
+        setUsers(data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -181,7 +181,7 @@ function Dashboard() {
     })
       .then((res) => res.json())
       .then(async (data) => {
-        await setReferi(data.data);
+        setReferi(data.data);
       })
       .catch((error) => {
         console.log(error);
@@ -208,7 +208,7 @@ function Dashboard() {
       .then((res) => res.json())
       .then(async (data) => {
         await console.log(data);
-        await setNewUserNameURL(data.data.url);
+        setNewUserNameURL(data.data.url);
         // await console.log(newUserNameURL);
         // await console.log(data.data.url);
         const url = data.data.url;
@@ -246,7 +246,7 @@ function Dashboard() {
       .then(async (data) => {
         await console.log(data);
         alert(data.message);
-        await handleUsers(id);
+        handleUsers(id);
       })
       .catch((error) => {
         console.log(error);
