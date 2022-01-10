@@ -17,6 +17,7 @@ const theme = createTheme();
 export default function SignIn() {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState([]);
+  const [who, setWho] = useState([]);
   const [loading, setLoading] = useState(false);
   const [code, setCode] = useState("");
   const [email, setEMail] = useState("");
@@ -39,6 +40,10 @@ export default function SignIn() {
   useEffect(() => {
     console.log("my user---> ", user);
   }, [user]);
+
+  useEffect(() => {
+    console.log("who---> ", who);
+  }, [who]);
 
   useEffect(() => {
     console.log("send email to---> ", emailTo);
@@ -69,7 +74,7 @@ export default function SignIn() {
 
     const useremails = [...users];
 
-    const myUser = useremails.filter((u) => u.email == email);
+    const myUser = await useremails.filter((u) => u.email == email);
 
     console.log("------------------");
     setUser(myUser);
@@ -78,7 +83,8 @@ export default function SignIn() {
     if (user.length > 0) {
       const ii = user[0].referrer_id;
       //   console.log("This user has been invited by " + user[0].referrer_id);
-      const who = users.filter((u) => u.id == ii);
+      const nwho = await users.filter((u) => u.id == ii);
+      setWho(nwho);
       await console.log("who --> ", who[0]);
       setEMailTo(who[0].email);
       await console.log("This user has been invited by " + who[0].first_name);
@@ -116,10 +122,10 @@ export default function SignIn() {
           console.log("response--> ", response.data);
         }
         await console.log("========");
-        await setUser([]);
-        await setCode("");
-        await setEMail("");
-        await setEMailTo("");
+        setUser([]);
+        setCode("");
+        setEMail("");
+        setEMailTo("");
       })
       .catch((error) => {
         console.log(error);
