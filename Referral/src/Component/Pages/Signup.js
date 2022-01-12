@@ -82,21 +82,16 @@ export default function SignIn() {
     await console.log(user[0]);
     if (user.length > 0) {
       const ii = user[0].referrer_id;
-      //   console.log("This user has been invited by " + user[0].referrer_id);
-      const nwho = await users.filter((u) => u.id == ii);
-      setWho(nwho);
-      await console.log("who --> ", who[0]);
+      const who = users.filter((u) => u.id == user[0].referrer_id);
+      setWho(who);
       setEMailTo(who[0].email);
-      await console.log("This user has been invited by " + who[0].first_name);
-      // alert(`This user has been invited by ${who[0].first_name}`);
-      await findUser(user[0].id);
+      await findUser(user[0].id, who[0].email);
       setLoading(false);
     }
-    // alert("hi");
   };
 
-  const findUser = async (id) => {
-    console.log("inside find user: ", id);
+  const findUser = async (id, email) => {
+    console.log("inside find user: ", id, email);
     await fetch(`https://referral-factory.com/api/v1/users/${id}`, {
       method: "PUT",
       headers: new Headers({
